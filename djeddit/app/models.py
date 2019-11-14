@@ -24,16 +24,12 @@ class Sub(models.Model):
     description = models.CharField(max_length = 100, default = 'A Djeddit sub')
     created_on = models.DateField(auto_now_add = True)
     #FIX THIS
-    members = models.ManyToManyField(UserProfile,blank = False)
+    members = models.ManyToManyField(UserProfile,blank = True)
 
     def __str__(self):
         return f'{self.name}'
 
-    def save(self,*args,**kwargs):
-        #self.members = self.created_by
-        print(f'Members of this sub are: {self.created_by}')
-        super().save(*args,**kwargs)
-
+    
 class Post(models.Model):
     title = models.TextField(max_length = 50)
     content = models.TextField()
@@ -56,7 +52,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.content[:20]}'
-        
+
 class Vote(models.Model):
     post = models.ForeignKey(Post, on_delete = models.CASCADE, null = True)
     comment = models.ForeignKey(Comment,  on_delete = models.CASCADE, null = True)
