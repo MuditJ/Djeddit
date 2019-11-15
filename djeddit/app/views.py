@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib.auth import login,logout
+from django.http import HttpResponse,HttpResponseRedirect
+from django.contrib.auth import login,logout,authenticate
+from django.urls import reverse
+
+import app.forms as forms
 # Create your views here.
 
 def index(request):
@@ -18,3 +21,39 @@ def logout_view(request):
         return HttpResponse('Logged out')
     else:
         return HttpResponse(f'Nobody currently logged in')
+
+def login_view(request):
+    if request.method == 'GET':
+        form = forms.UserLoginForm()
+        return render(request,'login.html',{'form' : form})
+    elif request.method == 'POST':
+        print('Processing login request')
+        submitted_form = forms.UserLoginForm(request.POST)
+        print(hasattr(submitted_form,'cleaned_data')) #False
+        if submitted_form.is_valid():
+            print(hasattr(submitted_form,'cleaned_data')) #True
+            print(submitted_form.cleaned_data) #Data which passes the validation stage
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request,username = username, password = password)
+            if user is not None:
+                login(request,user)
+                print('Succesfully logged in!')
+            else:
+                print('No such user exists.Try again')
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            print('Something went wrong')
+            return HttpResponseRedirect(reverse('home'))
+
+def create_sub_view(request):
+    if request.method == 'GET':
+        form = forms.SubForm()
+        return render(request,'login.html',{'form' : form})
+    elif request.method == 'POST':
+        submitted_form = forms.SubForm(request.POST)
+        if submitted_form.is_valid():
+            submitted_form.save()
+            print('Succesfully created new sub!')
+            return HttpResponseRedirect(reverse('home'))
+

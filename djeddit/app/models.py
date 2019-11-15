@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 DEFAULT_USER = User.objects.first() #Mudit-Admin
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User,on_delete = models.CASCADE)
+    user = models.OneToOneField(User,on_delete = models.CASCADE, related_name= 'user_profile')
     bio = models.CharField(max_length = 200,blank = True)
     #These fields are present in the User model
     #username = models.CharField(max_length = 20, blank = False)
@@ -19,7 +19,7 @@ class UserProfile(models.Model):
         return f'Profile for user {self.user.username}'
 
 class Sub(models.Model):
-    name = models.CharField(max_length = 30)
+    name = models.CharField(max_length = 30,unique = True)
     created_by = models.ForeignKey(User,on_delete = models.CASCADE, null = True)
     description = models.CharField(max_length = 100, default = 'A Djeddit sub')
     created_on = models.DateField(auto_now_add = True)
