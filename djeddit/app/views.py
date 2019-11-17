@@ -8,7 +8,8 @@ import app.forms as forms
 # Create your views here.
 
 def index(request):
-    return HttpResponse('Hello World. This is the home page.')
+    return render(request,'base.html')
+    #return HttpResponse('Hello World. This is the home page.')
     
 def home(request):
     #After logging outvia logout_view, the user is the AnonymousUser
