@@ -8,4 +8,6 @@ urlpatterns = [
     path('login',views.login_view,name = 'login'),
     #path('process-login',views.process_login_view,name = 'process-login'), 
     path('create-sub',views.create_sub_view,name = 'create-sub'),
+    path('profile',views.profile_view,name = 'profile'),
+    path('all',views.all_subs_view,name = 'all-subs'),
 ]

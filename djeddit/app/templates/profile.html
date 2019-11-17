@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html> 
+<h2> Subs you are subscribed to:</h2>
+    <ul>
+    {% for sub in subs.all %}
+        <li> {{ sub }}</li>
+    {% endfor %}
+    <ul>
+<h2> Your recent posts:</h2>
+<ul>
+    {% for post in posts.all %}
+        <li> {{ post }}</li>
+    {% endfor %}
+    <ul>
+<h2> Your recent comments:</h2>
+<ul>
+    {% for comment in comments.all %}
+        <li> {{ comment }}</li>
+    {% endfor %}
+    <ul>
+
+</html>

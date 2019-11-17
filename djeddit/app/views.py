@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-
+import app.models as models
 import app.forms as forms
 # Create your views here.
 
@@ -57,3 +58,17 @@ def create_sub_view(request):
             print('Succesfully created new sub!')
             return HttpResponseRedirect(reverse('home'))
 
+
+def profile_view(request):
+    if request.user.is_authenticated:
+        user = request.user.user_profile
+        subs = user.sub_set
+        posts = user.post_set
+        comments = user.comment_set
+        return render(request,'profile.html',{'subs':subs,'comments' : comments, 'posts':posts})
+    else:
+        return HttpResponse('You need to log in first')
+
+def all_subs_view(request):
+    subs = models.Sub.objects.all()
+    return render(request,'allSubs.html',{'subs':subs})
