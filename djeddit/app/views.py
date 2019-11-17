@@ -14,17 +14,11 @@ def home(request):
     #After logging outvia logout_view, the user is the AnonymousUser
     return HttpResponse(f'This is the home page. Current user is {request.user}')
 
-def logout_view(request):
-    #Logout the current user i.e. flush user related session data
-    if request.user.is_authenticated:
-        logout(request)
-        print(f'User now is {request.user}')
-        return HttpResponse('Logged out')
-    else:
-        return HttpResponse(f'Nobody currently logged in')
 
 def login_view(request):
     if request.method == 'GET':
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('home'))
         form = forms.UserLoginForm()
         return render(request,'login.html',{'form' : form})
     elif request.method == 'POST':
@@ -47,17 +41,56 @@ def login_view(request):
             print('Something went wrong')
             return HttpResponseRedirect(reverse('home'))
 
-def create_sub_view(request):
-    if request.method == 'GET':
-        form = forms.SubForm()
-        return render(request,'login.html',{'form' : form})
-    elif request.method == 'POST':
-        submitted_form = forms.SubForm(request.POST)
-        if submitted_form.is_valid():
-            submitted_form.save()
-            print('Succesfully created new sub!')
-            return HttpResponseRedirect(reverse('home'))
+def logout_view(request):
+    #Logout the current user i.e. flush user related session data
+    if request.user.is_authenticated:
+        logout(request)
+        print(f'User now is {request.user}')
+        return HttpResponse('Logged out')
+    else:
+        return HttpResponse(f'Nobody currently logged in')
 
+def signup_view(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            form = forms.UserForm()
+            return render(request,'signUp.html',{'form':form})
+    elif request.method == 'POST':
+        submitted_form = forms.UserForm(request.POST)
+        if submitted_form.is_valid():
+            new_user = submitted_form.save()
+            #new_user_profile = models.UserProfile(user = new_user)
+            #new_user_profile.save()
+            print(f'Succesfully created new user: {new_user} who has profile: {new_user.user_profile}!')
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            return HttpResponseRedirect(reverse('signup')) 
+
+
+def create_sub_view(request):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            form = forms.SubForm()
+            return render(request,'login.html',{'form' : form})
+        elif request.method == 'POST':
+            submitted_form = forms.SubForm(request.POST)
+            if submitted_form.is_valid():
+                new_sub = submitted_form.save(commit = False) #Hold off on saving this to the database
+                new_sub.created_by = request.user.user_profile
+                new_sub.save()
+                #No need to use the save_m2m as no many to many relationship data comes from the form
+                print('Succesfully created new sub!')
+                return HttpResponseRedirect(reverse('home'))
+    else:
+        return HttpResponseRedirect(reverse('home'))
+
+def create_post_view(request):
+    if request.user.is_authenticated:
+        pass
+    else:
+        return HttpResponseRedirect(reverse('home'))        
 
 def profile_view(request):
     if request.user.is_authenticated:

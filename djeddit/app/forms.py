@@ -10,11 +10,16 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['username','password','email']
-
-    #Overriding save to also create a UserProfile model instance
-    def save(self, *args,**kwargs):
-        super().save(*args,**kwargs)
-        UserProfile.objects.create(user = self)
+        widgets = {
+            'password' : forms.PasswordInput(),
+        }
+    def save(self, commit=True):
+        new_user = super().save(commit=False)
+        new_user.set_password(self.cleaned_data["password"])
+        new_user.save()
+        user_profile = UserProfile(user = new_user)
+        user_profile.save()
+        return new_user
 
 class UserLoginForm(forms.Form):
     username = forms.CharField(label = 'Enter username:')
@@ -25,4 +30,3 @@ class SubForm(ModelForm):
     class Meta:
         model = Sub
         fields = ['name','description']
-
