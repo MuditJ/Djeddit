@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <!--Use Model Form to render a form here-->
+{% extends 'base.html' %}
+
+{% block content %}
+<!--Use Model Form to render a form here-->
     <form action="" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="submit" value="Submit">
     </form>
-
-</html>
+{% endblock %}

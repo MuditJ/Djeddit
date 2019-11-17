@@ -13,8 +13,7 @@ def index(request):
     
 def home(request):
     #After logging outvia logout_view, the user is the AnonymousUser
-    return HttpResponse(f'This is the home page. Current user is {request.user}')
-
+    return render(request, 'home.html', {'user': request.user})
 
 def login_view(request):
     if request.method == 'GET':

@@ -1,5 +1,7 @@
-<!DOCTYPE html>
-<html> 
+{% extends 'base.html' %}
+
+{% block content %}
+
 <h2> Subs you are subscribed to:</h2>
     <ul>
     {% for sub in subs.all %}
@@ -18,5 +20,5 @@
         <li> {{ comment }}</li>
     {% endfor %}
     <ul>
-
-</html>
+        
+{% endblock %}
