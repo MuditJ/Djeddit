@@ -6,6 +6,7 @@
     {% for comment in comments %}
     <li>
         {{ comment.content}} - {{ comment.created_by }}
+        {{ comment.votes }}
     </li>
 
     {% endfor %}

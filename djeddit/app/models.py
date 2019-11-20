@@ -34,8 +34,8 @@ class Post(models.Model):
     title = models.TextField(max_length = 50)
     content = models.TextField()
     created_by = models.ForeignKey(UserProfile,on_delete = models.CASCADE,null = False)
-    upvotes = models.IntegerField(blank = True,default = 0)
-    downvotes = models.IntegerField(blank = True,default = 0)
+    #upvotes = models.IntegerField(blank = True,default = 0)
+    #downvotes = models.IntegerField(blank = True,default = 0)
     sub_posted_on = models.ForeignKey('Sub', on_delete = models.CASCADE,related_name = 'posts')
     created_on = models.DateField(auto_now_add = True)
 
@@ -46,18 +46,19 @@ class Comment(models.Model):
     parent_post = models.ForeignKey(Post, on_delete = models.CASCADE, null = False)
     created_by = models.ForeignKey(UserProfile,on_delete = models.CASCADE)
     content = models.TextField(default = 'Mitigating schema mistake')
-    upvotes = models.IntegerField(blank = True, default = 0)
-    downvotes = models.IntegerField(blank = True, default = 0)
+    #upvotes = models.IntegerField(blank = True, default = 0)
+    #downvotes = models.IntegerField(blank = True, default = 0)
     created_on = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
         return f'{self.content[:20]}'
 
+
 class Vote(models.Model):
     post = models.ForeignKey(Post, related_name = 'votes', on_delete = models.CASCADE, blank = True, null = True)
     comment = models.ForeignKey(Comment, related_name = 'votes', on_delete = models.CASCADE, blank = True, null = True)
     voted = models.BooleanField()
-    user_profile = models.ForeignKey(UserProfile, on_delete = models.CASCADE, null = False)
+    user_voted = models.ForeignKey(UserProfile, related_name = 'votes_done',on_delete = models.CASCADE, null = False)
     
     def __str__(self):
-        return f'Vote made by {self.user_profile.user.username} on {self.post if not None else self.comment}'
+        return f'Vote made by {self.user_voted.user.username} on {self.post if not None else self.comment}'
