@@ -96,9 +96,9 @@ def create_post_view(request):
 def profile_view(request):
     if request.user.is_authenticated:
         user = request.user.user_profile
-        subs = user.sub_set
-        posts = user.post_set
-        comments = user.comment_set
+        subs = user.created_subs
+        posts = user.posts_created
+        comments = user.comments_made
         return render(request,'profile.html',{'subs':subs,'comments' : comments, 'posts':posts})
     else:
 

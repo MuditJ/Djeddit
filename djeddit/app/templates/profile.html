@@ -1,24 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style type = "text/css">
+    .border-class
+    {
+      border:thin black solid;
+      margin:20px;
+      padding:20px;
+    }
+    </style>
 
-<h2> Subs you are subscribed to:</h2>
-    <ul>
-    {% for sub in subs.all %}
-        <li> {{ sub }}</li>
-    {% endfor %}
-    <ul>
-<h2> Your recent posts:</h2>
-<ul>
-    {% for post in posts.all %}
-        <li> {{ post }}</li>
-    {% endfor %}
-    <ul>
-<h2> Your recent comments:</h2>
-<ul>
-    {% for comment in comments.all %}
-        <li> {{ comment }}</li>
-    {% endfor %}
-    <ul>
-        
+<div class = "container d-flex">
+    
+        <div class = "card ">
+                <h4 class = "card-title"> Subs you are subscribed to:</h2>
+            <ul>
+            {% for sub in subs.all %}
+                <li class = "card-text"> {{ sub }}</li>
+            {% endfor %}
+            <ul>
+        </div>
+
+        <div class = "card">    
+        <h4 class = "card-title"> Your recent posts:</h4>
+        <ul>
+            {% for post in posts.all %}
+                <li class = "card-text"> {{ post }}</li>
+            {% endfor %}
+            <ul>
+        </div>
+
+        <div class = "card">
+            <h4 class = "card-title"> Your recent comments:</h2>
+            <ul>
+                {% for comment in comments.all %}
+                <li class = "card-text"> {{ comment }}</li>
+            {% endfor %}
+            <ul>
+        </div> 
+
 {% endblock %}

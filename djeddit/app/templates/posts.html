@@ -5,17 +5,16 @@
 
 <h1> {{ sub.name }} </h1>
 
-<h3> {{ sub.description }} </h3>
+<h5> {{ sub.description }} </h5>
 
-<ul>
-    {% for post in posts %}
-    <li>
-     <h3> {{ post.title }} </h3> 
-     <p> {{ post.content}} </p>
-     <p> View comments <a href = "{% url 'get-comments' post.id %}"> here</a></p>
-     <small> {{ post.votes }} </small>
-    </li>
-    {% endfor %}
-</ul>
-
+<div id="container">
+            {% for post in posts %}
+            <div class = "card ">
+                <h5 class = "card-title"> {{ post.title }} </h5> 
+                <p class = "card-text"> {{ post.content}} </p>
+                <p> View comments <a href = "{% url 'get-comments' post.id %}"> here</a></p>
+                <small> {{ post.votes }} </small>
+                {% endfor %}
+        </div>
+</div>
 {% endblock %}

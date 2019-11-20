@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <h2>
-        Browse through the different subs on Djeddit
-    </h2>
-    <ul>
-        {% for sub in subs %}
-        <li>
-            {{ sub }}
-            <small> Visit this <a href = "{% url 'get-posts' sub.id %} "> sub: </a></small>
-        </li>
-        {% endfor %}
-    </ul>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id = "container">
+        <div class = "card "> 
+            <h3 class = "card-title">
+                Browse through the different subs on Djeddit
+            </h3>
+            <ul>
+                {% for sub in subs %}
+                <li class = "card-text">
+                    {{ sub }}
+                    <small> Visit this <a href = "{% url 'get-posts' sub.id %} "> sub: </a></small>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endblock %}

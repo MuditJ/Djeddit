@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}<!--Use Model Form to render a form here-->
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
-    </form>
+<style type = "text/css">
+.border-class
+{
+  border:thin black solid;
+  margin:20px;
+  padding:20px;
+}
+</style>
+    <div id = "container" class = "d-flex form-group justify-content-center">
+        <form action="" method="post" class = "card p-1 border-class">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Submit" class = "btn btn-primary">
+        </form>
+    </div>
 {% endblock %}
 
