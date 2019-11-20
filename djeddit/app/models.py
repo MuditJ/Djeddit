@@ -14,7 +14,7 @@ class UserProfile(models.Model):
     created_on = models.DateField(auto_now_add = True)
 
     def __str__(self):
-        return f'Profile for user {self.user.username}'
+        return f'{self.user.username}'
 
 class Sub(models.Model):
     name = models.CharField(max_length = 30,unique = True)

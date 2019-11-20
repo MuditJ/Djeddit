@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<style type = "text/css">
+    .border-class
+    {
+      border:thin black solid;
+      margin:20px;
+      padding:20px;
+    }
+    </style>
 
 <h1> {{ sub.name }} </h1>
 
@@ -9,12 +16,14 @@
 
 <div id="container">
             {% for post in posts %}
-            <div class = "card ">
-                <h5 class = "card-title"> {{ post.title }} </h5> 
+            <div class = "card border-class">
+                <h4 class = "card-title"> {{ post.title }} </h4> 
                 <p class = "card-text"> {{ post.content}} </p>
+                <small> By: {{ post.created_by }} </small>
                 <p> View comments <a href = "{% url 'get-comments' post.id %}"> here</a></p>
                 <small> {{ post.votes }} </small>
-                {% endfor %}
-        </div>
+            </div>    
+            {% endfor %}
+        
 </div>
 {% endblock %}
