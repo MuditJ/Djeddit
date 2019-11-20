@@ -43,7 +43,7 @@ class Post(models.Model):
         return f'{(self.title)} -> {self.sub_posted_on}'
 
 class Comment(models.Model):
-    parent_post = models.ForeignKey(Post, on_delete = models.CASCADE, null = False)
+    parent_post = models.ForeignKey(Post, related_name = 'comments',on_delete = models.CASCADE, null = False)
     created_by = models.ForeignKey(UserProfile,on_delete = models.CASCADE)
     content = models.TextField(default = 'Mitigating schema mistake')
     #upvotes = models.IntegerField(blank = True, default = 0)

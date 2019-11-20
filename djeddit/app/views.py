@@ -100,7 +100,14 @@ def profile_view(request):
         comments = user.comment_set
         return render(request,'profile.html',{'subs':subs,'comments' : comments, 'posts':posts})
     else:
+
         return HttpResponse('You need to log in first')
+
+def profile_dashboard_view(request):
+    if request.user.is_authenticated:
+        return HttpResponse('Yet to implement')
+    else:
+        return HttpResponseRedirect(reverse('home'))
 
 def all_subs_view(request):
     subs = models.Sub.objects.all()
@@ -115,13 +122,14 @@ def get_posts_for_sub(request,sub_id):
     posts = models.Post.objects.filter(sub_posted_on__pk = sub_id)
     return render(request,'posts.html',{'sub' : sub, 'posts' : posts})
 
-def get_comments_for_post(request):
-    post = models.Post.objects.get(pk = request.GET['id'])
+def get_comments_for_post(request,post_id):
+    post = models.Post.objects.get(pk = post_id)
     sub = post.sub_posted_on
-    comments = post.comments
+    comments = post.comments.all()
     return render(request,'comments.html',{'sub' : sub, 'post': post, 'comments' : comments})
 
 def random_view(request, num = None):
     print(request.GET)
     print(num)
     return HttpResponse('Hello')
+
