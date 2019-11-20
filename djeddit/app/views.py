@@ -105,3 +105,23 @@ def profile_view(request):
 def all_subs_view(request):
     subs = models.Sub.objects.all()
     return render(request,'allSubs.html',{'subs':subs})
+
+def rising_subs_view(request):
+    subs = models.Sub.objects.all()
+    return render(request,'allSubs.html',{'subs' : subs})
+
+def get_posts_for_sub(request,sub_id):
+    sub = models.Sub.objects.get(pk = sub_id)
+    posts = models.Post.objects.filter(sub_posted_on__pk = sub_id)
+    return render(request,'posts.html',{'sub' : sub, 'posts' : posts})
+
+def get_comments_for_post(request):
+    post = models.Post.objects.get(pk = request.GET['id'])
+    sub = post.sub_posted_on
+    comments = post.comments
+    return render(request,'comments.html',{'sub' : sub, 'post': post, 'comments' : comments})
+
+def random_view(request, num = None):
+    print(request.GET)
+    print(num)
+    return HttpResponse('Hello')

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul> 
+    {% for comment in comments %}
+    <li>
+        {{ comment.content}} - {{ comment.created_by }}
+    </li>
+
+    {% endfor %}
+
+</ul>
+
+{% endblock %}
