@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect,JsonResponse
+from django.contrib import messages 
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -105,9 +106,20 @@ def profile_view(request):
 
 def profile_dashboard_view(request):
     if request.user.is_authenticated:
-        return HttpResponse('Yet to implement')
+        #return HttpResponse('Yet to implement')
+        #subscriptions = Implement subscriptions model
+        return render(request,'dashboard.html')
     else:
+        #Add flash message here
         return HttpResponseRedirect(reverse('home'))
+
+def get_chart_view(request):
+    user = request.user
+    #subscriptions = Implement subscriptions model
+    posts = user.user_profile.posts_created
+    comments = user.user_profile.comments_made
+    return JsonResponse({'posts' : posts, 'comments' :comments})
+
 
 def all_subs_view(request):
     subs = models.Sub.objects.all()
@@ -131,5 +143,6 @@ def get_comments_for_post(request,post_id):
 def random_view(request, num = None):
     print(request.GET)
     print(num)
-    return HttpResponse('Hello')
+    messages.add_message(request,messages.INFO,'Hi!')
+    return render(request,'random.html')
 

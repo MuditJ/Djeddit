@@ -33,7 +33,7 @@ class Sub(models.Model):
 class Post(models.Model):
     title = models.TextField(max_length = 50)
     content = models.TextField()
-    created_by = models.ForeignKey(UserProfile,on_delete = models.CASCADE,null = False)
+    created_by = models.ForeignKey(UserProfile,related_name = 'posts_created',on_delete = models.CASCADE,null = False)
     #upvotes = models.IntegerField(blank = True,default = 0)
     #downvotes = models.IntegerField(blank = True,default = 0)
     sub_posted_on = models.ForeignKey('Sub', on_delete = models.CASCADE,related_name = 'posts')
@@ -44,7 +44,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     parent_post = models.ForeignKey(Post, related_name = 'comments',on_delete = models.CASCADE, null = False)
-    created_by = models.ForeignKey(UserProfile,on_delete = models.CASCADE)
+    created_by = models.ForeignKey(UserProfile,related_name = 'comments_made', on_delete = models.CASCADE)
     content = models.TextField(default = 'Mitigating schema mistake')
     #upvotes = models.IntegerField(blank = True, default = 0)
     #downvotes = models.IntegerField(blank = True, default = 0)
