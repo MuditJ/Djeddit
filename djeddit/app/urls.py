@@ -28,5 +28,7 @@ urlpatterns = [
     #path('get-chart-data/',views.get_chart_view,name = 'get-chart'),
     path('all/',views.all_subs_view,name = 'all-subs'),
     path('random/',views.random_view,name = 'random'),
+    path('profile/dashboard/',views.profile_dashboard_view,name = 'dashboard'),
+    path('api/data/',views.get_chart_view,name = 'json-data'),
     
 ]

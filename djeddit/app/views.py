@@ -146,11 +146,13 @@ def profile_view(request):
 
 def profile_dashboard_view(request):
     if request.user.is_authenticated:
+        user = request.user
         #return HttpResponse('Yet to implement')
         #subscriptions = Implement subscriptions model
-        return render(request,'dashboard.html')
+        return render(request,'dashboard.html',{'user':user})
     else:
         #Add flash message here
+        messages.add_message(request,messages.INFO,'You need to be logged in.')
         return HttpResponseRedirect(reverse('home'))
 
 
@@ -177,10 +179,12 @@ def create_comment_view(request):
 def get_chart_view(request):
     user = request.user
     #subscriptions = Implement subscriptions model
-    posts = user.user_profile.posts_created
-    comments = user.user_profile.comments_made
-    return JsonResponse({'posts' : posts, 'comments' :comments})
-
+    posts = user.user_profile.posts_created.count()
+    comments = user.user_profile.comments_made.count()
+    subs = user.user_profile.created_subs.count()
+    data = {'posts' : posts, 'comments' : comments, 'subs' : subs}
+    #return JsonResponse({'posts' : posts, 'comments' :comments,'subs' : subs})
+    return JsonResponse({'data' : data})
 
 def all_subs_view(request):
     user = request.user
