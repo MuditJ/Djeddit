@@ -30,7 +30,7 @@
             <ul>
                 {% for sub in subs %}
                 <li class = "card-text">
-                    {{ sub }}
+                    <em> {{ sub }} </em>
                     <small> Visit this <a href = "{% url 'get-posts' sub.id %} "> sub: </a></small>
                 </li>
                 {% endfor %}

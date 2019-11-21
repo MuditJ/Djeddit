@@ -35,8 +35,10 @@ def login_view(request):
             if user is not None:
                 login(request,user)
                 print('Succesfully logged in!')
+                messages.add_message(request,messages.SUCCESS,'Successful login')
             else:
-                print('No such user exists.Try again')
+                messages.add_message(request,messages.ERROR,'No such user exists.Try again')
+                #print('No such user exists.Try again')
             return HttpResponseRedirect(reverse('home'))
         else:
             print('Something went wrong')
@@ -47,7 +49,8 @@ def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
         print(f'User now is {request.user}')
-        return HttpResponse('Logged out')
+        messages.add_message(request,messages.INFO,'You have logged out.')
+        return HttpResponseRedirect(reverse('home'))
     else:
         return HttpResponse(f'Nobody currently logged in')
 
@@ -65,6 +68,7 @@ def signup_view(request):
             #new_user_profile = models.UserProfile(user = new_user)
             #new_user_profile.save()
             print(f'Succesfully created new user: {new_user} who has profile: {new_user.user_profile}!')
+            messages.add_message(request,messages.SUCCESS,'Account created')
             return HttpResponseRedirect(reverse('home'))
         else:
             return HttpResponseRedirect(reverse('signup')) 
@@ -83,6 +87,7 @@ def create_sub_view(request):
                 new_sub.save()
                 #No need to use the save_m2m as no many to many relationship data comes from the form
                 print('Succesfully created new sub!')
+                messages.add_message(request,messages.SUCCESS,f'Created {new_sub.name}')
                 return HttpResponseRedirect(reverse('home'))
     else:
         return HttpResponseRedirect(reverse('home'))
@@ -125,6 +130,27 @@ def profile_dashboard_view(request):
     else:
         #Add flash message here
         return HttpResponseRedirect(reverse('home'))
+
+
+def create_comment_view(request):
+        if request.user.is_authenticated:
+            if request.method == 'GET':
+                #Render form
+                form = forms.CommentForm()
+                return render(request,'createComment.html',{'form': form})
+            elif request.method == 'POST':
+                submitted_form = forms.CommentForm(request.POST)
+                if submitted_form.is_valid():
+                    new_comment = submitted_form.save(commit = False) #Hold off on saving this to the database
+                    new_comment.created_by = request.user.user_profile
+                    new_comment.save()
+                    post = new_comment.parent_post
+                    #No need to use the save_m2m as no many to many relationship data comes from the form
+                    print('Succesfully created new comment!')
+                    return HttpResponseRedirect(reverse('get-comments',kwargs = {'post_id' : post.id}))
+
+        else:
+            return HttpResponseRedirect(reverse('home'))
 
 def get_chart_view(request):
     user = request.user

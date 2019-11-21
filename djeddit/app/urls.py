@@ -22,6 +22,7 @@ urlpatterns = [
     #path('process-login',views.process_login_view,name = 'process-login'), 
     path('create-sub/',views.create_sub_view,name = 'create-sub'),
     path('create-post/',views.create_post_view,name = 'create-post'),
+    path('create-comment/',views.create_comment_view, name = 'create-comment'),
     path('profile/',views.profile_view,name = 'profile'),
     #path('profile/dashboard/',views.profile_dashboard_view,name = 'profile-dashboard'),
     #path('get-chart-data/',views.get_chart_view,name = 'get-chart'),

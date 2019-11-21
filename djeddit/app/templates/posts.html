@@ -41,10 +41,15 @@
             <div class = "card border-class">
                 <h4 class = "card-title"> {{ post.title }} </h4> 
                 <p class = "card-text"> {{ post.content}} </p>
-                <small> By: {{ post.created_by }} </small>
-                <p> View comments <a href = "{% url 'get-comments' post.id %}"> here</a></p>
-                
-            </div>    
+                <small> By: {{ post.created_by }} <br> Posted on {{ post.created_on|date:"D d M" }}</small>
+                <p> View comments <a href = "{% url 'get-comments' post.id %}"> here</a></p>     
+            </div>
+
+            {% empty %}
+            <div class = "card border-class">
+              <p class = "card-text"> No posts made on this sub yet. <a href = "{% url 'create-post' %}"> Create one </a> </p>
+            </div>
+
             {% endfor %}
         
 </div>

@@ -24,15 +24,24 @@
 
 {% block content %}
 
-<ul> 
+<div id = "container"> 
+
     {% for comment in comments %}
-    <li>
-        {{ comment.content}} - {{ comment.created_by }}
-        {{ comment.votes }}
-    </li>
+    &nbsp;
+    <div class = "card border-class">
+    <p class = "card-text">
+        {{ comment.content}}
+    </p>
+    <small> By: {{ comment.created_by }} <br>
+     Commented on {{ comment.created_on|date:"D d M" }} at {{ comment.created_on|date:"H:i" }} </small>
+    &nbsp;
+    {% empty %}
+    <div class = "card border-class">
+      <p class = "card-text"> No comments made on this post yet. <a href = "{% url 'create-comment' %}"> Create one </a> </p>
+      
+    </div>
 
     {% endfor %}
-
-</ul>
-
+  </div>
+</div>
 {% endblock %}

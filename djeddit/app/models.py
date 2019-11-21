@@ -27,7 +27,7 @@ class Sub(models.Model):
 
 
     def __str__(self):
-        return f'{self.name}: created by {self.created_by.user.username}'
+        return f'{self.name}'
 
     
 class Post(models.Model):
@@ -51,7 +51,7 @@ class Comment(models.Model):
     created_on = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
-        return f'{self.content[:20]}'
+        return f'{self.content}'
 
 
 class Vote(models.Model):

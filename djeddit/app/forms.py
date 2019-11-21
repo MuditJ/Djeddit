@@ -35,3 +35,8 @@ class PostForm(ModelForm):
     class Meta:
         model = Post
         fields = ['title','content','sub_posted_on']
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['parent_post','content']
