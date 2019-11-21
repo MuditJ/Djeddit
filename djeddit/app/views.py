@@ -74,7 +74,7 @@ def create_sub_view(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
             form = forms.SubForm()
-            return render(request,'login.html',{'form' : form})
+            return render(request,'createSub.html',{'form' : form})
         elif request.method == 'POST':
             submitted_form = forms.SubForm(request.POST)
             if submitted_form.is_valid():
@@ -89,7 +89,20 @@ def create_sub_view(request):
 
 def create_post_view(request):
     if request.user.is_authenticated:
-        pass
+        if request.method == 'GET':
+            #Render form
+            form = forms.PostForm()
+            return render(request,'createPost.html',{'form': form})
+        elif request.method == 'POST':
+            submitted_form = forms.PostForm(request.POST)
+            if submitted_form.is_valid():
+                new_post = submitted_form.save(commit = False) #Hold off on saving this to the database
+                new_post.created_by = request.user.user_profile
+                new_post.save()
+                #No need to use the save_m2m as no many to many relationship data comes from the form
+                print('Succesfully created new post!')
+                return HttpResponseRedirect(reverse('home'))
+
     else:
         return HttpResponseRedirect(reverse('home'))        
 

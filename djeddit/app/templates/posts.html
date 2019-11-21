@@ -1,5 +1,27 @@
 {% extends 'base.html' %}
 
+{% block navbar %}
+
+<div class="collapse navbar-collapse" id="collapsibleNavbar">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href= "{% url 'home' %}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Other</a>
+    </li>    
+  </ul>
+</div> 
+
+{% endblock %}
+
+
+
+
+
 {% block content %}
 <style type = "text/css">
     .border-class
@@ -21,7 +43,7 @@
                 <p class = "card-text"> {{ post.content}} </p>
                 <small> By: {{ post.created_by }} </small>
                 <p> View comments <a href = "{% url 'get-comments' post.id %}"> here</a></p>
-                <small> {{ post.votes }} </small>
+                
             </div>    
             {% endfor %}
         

@@ -30,3 +30,8 @@ class SubForm(ModelForm):
     class Meta:
         model = Sub
         fields = ['name','description']
+
+class PostForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title','content','sub_posted_on']

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block navbar %}
 
 <div class="collapse navbar-collapse" id="collapsibleNavbar">
@@ -21,21 +22,20 @@
 
 
 {% block content %}
-    <!--Use Model Form to render a form here-->
-    <style type = "text/css">
-        .border-class
-        {
-          border:thin black solid;
-          margin:20px;
-          padding:20px;
-        }
-        </style>
-
-    <div id = "container" class = "d-flex form-group justify-content-center"> 
-        <form action="" method="post"  class = "card p-1 border-class">
+<style type = "text/css">
+    .border-class
+    {
+      border:thin black solid;
+      margin:20px;
+      padding:20px;
+    }
+    </style>
+<!--Use Model Form to render a form here-->
+    <div id = "container" class = "d-flex form-group justify-content-center">
+        <form action="" method="post" class = "card p-1 border-class">
             {% csrf_token %}
             {{ form }}
             <input type="submit" value="Submit" class = "btn btn-primary">
         </form>
-</div>
+    </div>
 {% endblock %}
