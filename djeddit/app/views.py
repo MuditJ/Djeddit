@@ -14,7 +14,11 @@ def index(request):
     
 def home(request):
     #After logging outvia logout_view, the user is the AnonymousUser
-    return render(request, 'home.html', {'user': request.user})
+    user = request.user
+    if user.is_authenticated:
+        recent_posts = models.Post.objects.filter(created_by = user.user_profile).latest('id')
+        recent_comments = models.Comment.objects.filter(created_by = user.user_profile).latest('id')
+    return render(request, 'home.html', {'user': request.user, 'post': recent_posts, 'comment' : recent_comments})
 
 def login_view(request):
     if request.method == 'GET':
