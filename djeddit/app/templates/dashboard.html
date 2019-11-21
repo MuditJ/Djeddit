@@ -22,49 +22,53 @@
 
 
 {% block content %}
-<!-- Using highchart.js to integrate charts for profile-->
-<div id="container" data-url = "{% url 'get-chart' %}"></div>
 <!--<script src="https://code.highcharts.com/highcharts.src.js"></script>-->
 <canvas id = "myChart"> </canvas>
 	<script src = "https://cdn.jsdelivr.net/npm/chart.js@2.8.0"> </script>
 <script>
-var http = new XMLHttpRequest();
-		var result = true
+let http = new XMLHttpRequest();
+		let result = true
+		//The callback function
 		http.onreadystatechange = function() {
 			if (http.readyState == XMLHttpRequest.DONE) {
 					if (http.status == 200) {
-					console.log("Request completed:" + http.readyState)
-					var responseData = JSON.parse(http.responseText)
-					setParams(responseData)
-				} else
-					result = false
+					console.log("Request completed:" + http.readyState);
+					let responseData = JSON.parse(http.responseText);
+					console.log("Response data is" + responseData);
+					setParams(responseData);
+				} else {
+					result = false;
+					fallBack();
+				}
 			}
 		}
-		console.log("readyState value is:" + http.readyState)
+		console.log("readyState value is:" + http.readyState);
 		http.open('GET','http://localhost:8000/d/api/data/');
+		console.log("Sending the AJAX request");
 		http.send();
 		
-		if (result == false) {
-			var p = document.createElement("p")
-			p.innerHTML = "Unable to render graph"
-			var link = document.createElement("a")
-			link.setAttribute('href',"{% url 'home' %}")
-			link.innerHTML = "Go to home page"
-			p.appendChild(link)
-			document.body.appendChild(p)
+		function fallBack() {
+			if (result == false) {
+				let p = document.createElement("p")
+				p.innerHTML = "Unable to render graph"
+				let link = document.createElement("a")
+				link.setAttribute('href',"{% url 'home' %}")
+				link.innerHTML = "Go to home page"
+				p.appendChild(link)
+				document.body.appendChild(p)
+			}
 		}
-		else {
-			console.log("Here")
-			function setParams(responseData) {
-				var ctx = document.getElementById('myChart').getContext('2d');
-				var chart = new Chart(ctx, {
+
+		function setParams(responseData) {
+				let ctx = document.getElementById('myChart').getContext('2d');
+				let chart = new Chart(ctx, {
     	// The type of chart we want to create
     	type: 'bar',
     	// The data for our dataset
     	data: {
         	labels: Object.keys(responseData.data),
         	datasets: [{
-            label: 'Statistics',
+            label: 'Profile Statistics',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: Object.values(responseData.data)
@@ -73,8 +77,7 @@ var http = new XMLHttpRequest();
     	// Configuration options go here
     	options: {}
 			});
-		}
-	}
+		}	
 
 
 
