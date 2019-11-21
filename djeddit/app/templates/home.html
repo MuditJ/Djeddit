@@ -48,34 +48,38 @@
       <hr class="d-sm-none">
     </div>
     <div class="col-sm-8">
-      <h2>Profile Details</h2>
-      <h5>Account created on: {{ user.user_profile.created_on|date:"D d M Y" }}</h5>
-      <p>Username: {{user.username }}</p>
-      <p> Bio: {{ user.user_profile.bio }}</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-      <br>
-      <h2>Your recent activity</h2>
-      <h6> Posts </h6>
-      {% if post %}
-      
-      <p>{{ post }}</p>
-      <small> on {{ post_sub }}</small>
-      {% else %}
-      <p> Nothing to show here </p>
-      {% endif %}
-      
-      <h6> Comments </h6>
-      {% if comment %}
-      
-      <p>{{ comment }}</p>
-      <small> on {{ comment_sub }}</small>
-      {% else %}
-      <p> Nothing to show here </p>
-      {% endif %}
+      <div class = "card border-right-0"> 
+        <h4 class = "card-title">Profile Details</h2>
+        <h6>Account created on: {{ user.user_profile.created_on|date:"D d M Y" }}</h6>
+        <p>Username: {{user.username }}</p>
+        <p> Bio: {{ user.user_profile.bio }}</p>
+        <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+        <br>
+    </div>
 
+      <div class = "card border-right-0">
+        <h4 class = "card-title">Your recent activity</h2>
+        <h6> Posts </h6>
+        {% if post %}
+        
+        <p>{{ post }}</p>
+        <small> on {{ post_sub }}</small>
+        {% else %}
+        <p> Nothing to show here </p>
+        {% endif %}
+        
+        <h6> Comments </h6>
+        {% if comment %}
+        
+        <p>{{ comment }}</p>
+        <small> on {{ comment_sub }}</small>
+        {% else %}
+        <p> Nothing to show here </p>
+        {% endif %}
+      </div>
     </div>
   </div>
-</div>
+
 
 
 {% endblock %}

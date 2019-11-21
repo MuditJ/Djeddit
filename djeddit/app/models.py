@@ -31,7 +31,7 @@ class Sub(models.Model):
 
     
 class Post(models.Model):
-    title = models.TextField(max_length = 50)
+    title = models.TextField(max_length = 200)
     content = models.TextField()
     created_by = models.ForeignKey(UserProfile,related_name = 'posts_created',on_delete = models.CASCADE,null = False)
     #upvotes = models.IntegerField(blank = True,default = 0)

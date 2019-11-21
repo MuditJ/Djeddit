@@ -8,7 +8,7 @@
       <a class="nav-link" href= "{% url 'home' %}">Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Profile</a>
+      <a class="nav-link" href="{% url 'create-post' %}">Create New Post</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{% url 'all-subs' %}">Other Subs</a>
@@ -51,6 +51,6 @@
             </div>
 
             {% endfor %}
-        
+            
 </div>
 {% endblock %}
