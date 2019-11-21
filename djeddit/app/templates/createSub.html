@@ -31,9 +31,10 @@
   }
   </style>
 <!--Use Model Form to render a form here-->
-    <div id = "container" class = "d-flex form-group justify-content-center">
+    <div id = "container" class = "d-flex form-group justify-content-center"> 
       <form action="" method="post" class = "card p-1 border-class">
           {% csrf_token %}
+          <h3 class = "card-title"> Create A New Sub</h3>
           {{ form }}
           <input type="submit" value="Submit" class = "btn btn-primary">
       </form>

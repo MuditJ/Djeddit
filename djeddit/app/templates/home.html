@@ -20,15 +20,6 @@
 {% endblock %}
 
 
-
-
-
-
-
-
-
-
-
 {% block content %}
 <div class="row">
     <div class="col-sm-4">
@@ -41,7 +32,11 @@
           <a class="nav-link active" href="#">Active</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href= "{% url 'login' %}">Login</a>
+          {% if user.is_authenticated %}
+            <a class="nav-link" href= "{% url 'logout' %}">Logout </a>
+          {% else %}
+          <a class="nav-link" href= "{% url 'login' %}">Login </a>
+          {% endif %}
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
@@ -60,13 +55,24 @@
       <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
       <br>
       <h2>Your recent activity</h2>
-      {% if user.is_authenticated %}
       <h6> Posts </h6>
+      {% if post %}
+      
       <p>{{ post }}</p>
-
-      <h6> Comments </h6>
-      <p>{{ comment }}</p>
+      <small> on {{ post_sub }}</small>
+      {% else %}
+      <p> Nothing to show here </p>
       {% endif %}
+      
+      <h6> Comments </h6>
+      {% if comment %}
+      
+      <p>{{ comment }}</p>
+      <small> on {{ comment_sub }}</small>
+      {% else %}
+      <p> Nothing to show here </p>
+      {% endif %}
+
     </div>
   </div>
 </div>

@@ -16,9 +16,27 @@ def home(request):
     #After logging outvia logout_view, the user is the AnonymousUser
     user = request.user
     if user.is_authenticated:
-        recent_posts = models.Post.objects.filter(created_by = user.user_profile).latest('id')
-        recent_comments = models.Comment.objects.filter(created_by = user.user_profile).latest('id')
-    return render(request, 'home.html', {'user': request.user, 'post': recent_posts, 'comment' : recent_comments})
+        pass
+        posts = models.Post.objects.filter(created_by = user.user_profile)
+        if posts:
+            recent_posts = posts.latest('id')
+            post_sub = recent_posts.sub_posted_on
+        else:
+            recent_posts = None
+            post_sub = None
+        comments = models.Comment.objects.filter(created_by = user.user_profile)
+        if comments:
+            recent_comments = comments.latest('id')
+            comment_sub = recent_comments.parent_post.sub_posted_on
+        else:
+            recent_comments = None
+            comment_sub = None
+    else:
+        subs = models.Sub.objects.all()
+        messages.add_message(request,messages.ERROR,'Redirected to home. You need to login first')
+        return render(request,'allSubs.html',{'subs' : subs})
+        #recent_posts,recent_comments = None,None
+    return render(request, 'home.html', {'user': request.user, 'post': recent_posts, 'comment' : recent_comments,'comment_sub' : comment_sub, 'comment_post' : post_sub})
 
 def login_view(request):
     if request.method == 'GET':
@@ -54,7 +72,7 @@ def logout_view(request):
         logout(request)
         print(f'User now is {request.user}')
         messages.add_message(request,messages.INFO,'You have logged out.')
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('all-subs'))
     else:
         return HttpResponse(f'Nobody currently logged in')
 
@@ -92,7 +110,7 @@ def create_sub_view(request):
                 #No need to use the save_m2m as no many to many relationship data comes from the form
                 print('Succesfully created new sub!')
                 messages.add_message(request,messages.SUCCESS,f'Created {new_sub.name}')
-                return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect(reverse('get-posts', kwargs = {'sub_id' : new_sub.id}))
     else:
         return HttpResponseRedirect(reverse('home'))
 
@@ -165,8 +183,9 @@ def get_chart_view(request):
 
 
 def all_subs_view(request):
+    user = request.user
     subs = models.Sub.objects.all()
-    return render(request,'allSubs.html',{'subs':subs})
+    return render(request,'allSubs.html',{'subs':subs,'user':user})
 
 def rising_subs_view(request):
     subs = models.Sub.objects.all()
