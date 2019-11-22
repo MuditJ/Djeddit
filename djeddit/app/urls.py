@@ -4,7 +4,9 @@ from . import views
 
 extra_patterns = [
     path('<int:sub_id>/',views.get_posts_for_sub, name = 'get-posts'),
+    path('<int:sub_id>/dashboard/',views.sub_dashboard_view,name = 'sub-dashboard'),
     path('post/<int:post_id>/', views.get_comments_for_post, name = 'get-comments'),
+    
     #path('<int:num>/',views.random_view,name = 'random')
 ]
 
@@ -29,6 +31,7 @@ urlpatterns = [
     path('all/',views.all_subs_view,name = 'all-subs'),
     path('random/',views.random_view,name = 'random'),
     path('profile/dashboard/',views.profile_dashboard_view,name = 'dashboard'),
+    path('api/data/<int:sub_id>/', views.sub_dashboard_data, name = 'json-sub-data'),
     path('api/data/',views.get_chart_view,name = 'json-data'),
     
 ]

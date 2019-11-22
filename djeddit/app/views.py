@@ -3,6 +3,7 @@ from django.http import HttpResponse,HttpResponseRedirect,JsonResponse
 from django.contrib import messages 
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.urls import reverse
 import app.models as models
 import app.forms as forms
@@ -155,6 +156,21 @@ def profile_dashboard_view(request):
         messages.add_message(request,messages.INFO,'You need to be logged in.')
         return HttpResponseRedirect(reverse('home'))
 
+def sub_dashboard_view(request,sub_id):
+    print(f'Requested id is {sub_id}')
+    name = models.Sub.objects.get(pk = sub_id).name
+    return render(request,'subDashboard.html', {'id' : sub_id, 'name' : name})
+
+def sub_dashboard_data(request, sub_id):
+    print('Got an AJAX request')
+    sub = models.Sub.objects.get(pk = sub_id)
+    sub_posts =  sub.posts
+    sub_comments = models.Comment.objects.filter(parent_post__sub_posted_on__id = sub_id)
+    members = sub.members.count()
+    post_contributors = sub_posts.values('created_by').order_by().annotate(Count('created_by')).count()
+    comment_contributors = sub_comments.values('created_by').order_by().annotate(Count('created_by')).count()
+    data = {'posts' : sub_posts.count(), 'members'  : members, 'comments' : sub_comments.count(), 'Posters' : post_contributors, 'Commenters' : comment_contributors}
+    return JsonResponse({'data' : data})
 
 def create_comment_view(request):
         if request.user.is_authenticated:
@@ -198,7 +214,7 @@ def rising_subs_view(request):
 def get_posts_for_sub(request,sub_id):
     sub = models.Sub.objects.get(pk = sub_id)
     posts = models.Post.objects.filter(sub_posted_on__pk = sub_id)
-    return render(request,'posts.html',{'sub' : sub, 'posts' : posts})
+    return render(request,'posts.html',{'sub' : sub, 'posts' : posts,'id' : sub_id})
 
 def get_comments_for_post(request,post_id):
     post = models.Post.objects.get(pk = post_id)
