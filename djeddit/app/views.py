@@ -7,6 +7,8 @@ from django.db.models import Count
 from django.urls import reverse
 import app.models as models
 import app.forms as forms
+
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 # Create your views here.
 
 def index(request):
@@ -220,11 +222,55 @@ def get_comments_for_post(request,post_id):
     post = models.Post.objects.get(pk = post_id)
     sub = post.sub_posted_on
     comments = post.comments.all()
-    return render(request,'comments.html',{'sub' : sub, 'post': post, 'comments' : comments})
+    comments = models.Comment.objects.filter(parent_post__id = post_id)
+    text = ''
+    analyzer = SentimentIntensityAnalyzer()
+    scores = analyzer.polarity_scores(text)
+    #print(scores)
+    for comment in comments:
+        text += ' ' + comment.content 
+    #print(text)
+    #print(scores.values())
+    list_scores = list(scores.values())
+    #print(type(list_scores))
+    if list_scores[2] > list_scores[1]:
+        sentiment = 'Positive'
+    elif list_scores[2] < list_scores[1]:
+        sentiment = 'Negative'
+    else:
+        sentiment = 'Neutral'
+    
+    return render(request,'comments.html',{'sub' : sub, 'post': post, 'comments' : comments,'sentiment' : sentiment})
 
 def random_view(request, num = None):
     print(request.GET)
     print(num)
     messages.add_message(request,messages.INFO,'Hi!')
+    
     return render(request,'random.html')
 
+'''
+def get_post_sentiment(request,post_id):
+    comments_ = models.Comment.objects.filter(parent_post__id = post_id)
+    text = ''
+    analyzer = SentimentIntensityAnalyzer()
+    scores = analyzer.polarity_scores(text)
+    #print(scores)
+    for comment in comments_:
+        text += ' ' + comment.content 
+    #print(text)
+    #print(scores.values())
+    list_scores = list(scores.values())
+    #print(type(list_scores))
+    sentiment = None
+    if list_scores[2] > list_scores[1]:
+        sentiment = 'Positive'
+    elif list_scores[2] < list_scores[1]:
+        sentiment = 'Negative'
+    else:
+        sentiment = 'Neutral'
+    
+    #print(list_scores)
+    print('Overall sentiment of the post is:')
+    return HttpResponse('Hi')
+'''

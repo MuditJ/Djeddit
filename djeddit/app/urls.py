@@ -6,7 +6,7 @@ extra_patterns = [
     path('<int:sub_id>/',views.get_posts_for_sub, name = 'get-posts'),
     path('<int:sub_id>/dashboard/',views.sub_dashboard_view,name = 'sub-dashboard'),
     path('post/<int:post_id>/', views.get_comments_for_post, name = 'get-comments'),
-    
+    #path('post/<int:post_id>/sentiment/',views.get_post_sentiment,name = 'post-sentiment'), 
     #path('<int:num>/',views.random_view,name = 'random')
 ]
 

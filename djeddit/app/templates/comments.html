@@ -25,10 +25,12 @@
 {% block content %}
 
 <div id = "container"> 
+    <h6 class = "card-title"> Overall post sentiment is {{ sentiment }} </h4>
 
     {% for comment in comments %}
     &nbsp;
     <div class = "card border-class">
+      
     <p class = "card-text">
         {{ comment.content}}
     </p>
