@@ -8,6 +8,7 @@ from django.urls import reverse
 import app.models as models
 import app.forms as forms
 
+#For sentiment analysis of all comments on a post
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 # Create your views here.
 
@@ -223,19 +224,16 @@ def get_comments_for_post(request,post_id):
     sub = post.sub_posted_on
     comments = post.comments.all()
     comments = models.Comment.objects.filter(parent_post__id = post_id)
-    text = ''
     analyzer = SentimentIntensityAnalyzer()
-    scores = analyzer.polarity_scores(text)
-    #print(scores)
+    #Getting overall polarity
+    positive,negative = 0,0
     for comment in comments:
-        text += ' ' + comment.content 
-    #print(text)
-    #print(scores.values())
-    list_scores = list(scores.values())
-    #print(type(list_scores))
-    if list_scores[2] > list_scores[1]:
+        scores = list(analyzer.polarity_scores(comment.content).values())
+        positive += scores[2]
+        negative += scores[0]
+    if positive > negative:
         sentiment = 'Positive'
-    elif list_scores[2] < list_scores[1]:
+    elif positive < negative:
         sentiment = 'Negative'
     else:
         sentiment = 'Neutral'

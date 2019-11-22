@@ -9,7 +9,7 @@
       <a class="nav-link" href="{% url 'home' %}">Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'all-subs' %}">All subs</a>
+      <a class="nav-link" href="{% url 'create-comment' %}">Add a new comment</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{% url 'get-posts' sub.id %}">View {{ sub.name }}</a>
@@ -25,6 +25,7 @@
 {% block content %}
 
 <div id = "container"> 
+    <h2 class = "card-title"> {{ post.title }} </h2>
     <h6 class = "card-title"> Overall post sentiment is {{ sentiment }} </h4>
 
     {% for comment in comments %}
